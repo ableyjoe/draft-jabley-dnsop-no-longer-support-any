@@ -1,5 +1,5 @@
 ---
-title: "Continuing Reduction in Support for QTYPE=ANY in the DNS"
+title: "Continuing to Reduce Support for ANY Queries in the DNS"
 #abbrev: "TODO - Abbreviation"
 category: std
 updates: RFC 1034, RFC 1035, RFC 8482
@@ -48,10 +48,9 @@ by malicious actors to attack third parties, and minimally-sized
 responses are often constructed in order to mitigate those security
 risks.  While queries with QTYPE=ANY can be used for troubleshooting
 in some cases, the substantial inconsistency in how such queries
-are handled makes them at best an unreliable signal.
-
-This document continues the process of dropping support for QTYPE=ANY
-from the DNS protocol.
+are handled makes them at best an unreliable signal. This document
+continues a careful and gradual process of dropping support for
+QTYPE=ANY from the DNS.
 
 --- middle
 
@@ -59,14 +58,16 @@ from the DNS protocol.
 
 {{!RFC1034}} and {{!RFC1035}} define a special query type (QTYPE)
 called "*" (type 255) which is commonly described in DNS implementations
-using the keyword "ANY" (the keyword "ANY" is also mentioned in
-{{!RFC6895}}.  This is described in {{!RFC1034}} section 3.7.1 as
-"matches all RR types". Despite the superficial simplicity of this
-direction, there are significant corner cases for which the
-specification is ambiguous, especially where a query's QNAME
-corresponds to a delegation (a case which DNS Security Extensions
-{{?RFC9364}} makes more complicated, with authoritative data now
-available both above and below the zone cut).
+using the keyword "ANY". The keyword "ANY" is also mentioned in
+{{!RFC6895}}.
+
+QTYPE 255 is described in {{!RFC1034}} section 3.7.1 as "matches
+all RR types". Despite the superficial simplicity of this direction,
+there are significant corner cases for which the specification is
+ambiguous, especially where a query's QNAME corresponds to a
+delegation (a case which the DNS Security Extensions {{?RFC9364}}
+make more complicated, with authoritative data now published both
+above and below the zone cut).
 
 {{!RFC8482}} recognises that server operators have reasons to provide
 minimal responses to queries with QTYPE=ANY ("ANY queries"), and
@@ -75,7 +76,7 @@ described in {{!RFC8482}} have been broadly implemented with no
 known negative consequences for end users. A consequence of that
 experience is that it is now even harder to predict the type of
 response any particular server night provide to an ANY query, and
-consequently more difficult to interpret the response.
+consequently even more difficult to interpret the response.
 
 It is known that some useful and constructive uses of ANY queries
 exist, despite their limitations. For example, ANY queries are
@@ -84,27 +85,27 @@ techniques and tools.
 
 It is also possible that software exists that sends ANY queries and
 expects a particular type of response, e.g. a response with a
-particular RCODE. Such scenarios do not seem outlandish, and being
-able to adapt to such situations when they come to light unexpectedly
-while remaining consistent with Internet standards is important.
+particular RCODE, and that an abrupt behave in server behaviour
+might have negative consequences. Such scenarios do not seem
+outlandish, and being able to adapt to such situations when they
+come to light unexpectedly while remaining consistent with Internet
+standards is important.
 
 ANY queries were a nice idea. However, the idea turns out to have
 been under-specified. There is a great deal of variation in their
 implementation, and it is difficult to imagine new protocols
 incorporating ANY queries since their treatment by servers is
-extremely inconsistent.
-
-This document reimagines {{!RFC8482}} as a first step on a path
-towards deprecation of ANY queries, and provides a second step in
-the same direction. The journey will continue.
+extremely inconsistent. This document recognises {{!RFC8482}} as a
+first step on a path towards deprecation of ANY queries, and provides
+a second step in the same direction. The journey will continue.
 
 
 # Terminology
 
 {::boilerplate bcp14-tagged}
 
-This document assumes familiarity with DNS-specific terminology as described
-in {{!RFC9499}}.
+This document assumes familiarity with DNS-specific terminology as
+described in {{!RFC9499}}.
 
 
 # Updated Guidance on the Use of ANY Queries
@@ -129,8 +130,8 @@ or gathering diagnostic information.
 ## Do not respond to ANY queries without good reason
 
 DNS servers SHOULD respond to ANY queries with RCODE = 4 (NOTIMPL)
-unless they have a specific local reason to respond differently. In
-such circumstances, DNS servers MAY respond following their
+unless they have a specific local reason to respond differently.
+In such circumstances, DNS servers MAY respond following their
 interpretation of {{!RFC1034}} and {{!RFC1035}} or with a minimal
 response as described in {{!RFC8482}}.
 
