@@ -1,7 +1,8 @@
 ---
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
-category: info
+title: "Dropping Support for QTYPE=ANY in the DNS"
+#abbrev: "TODO - Abbreviation"
+category: std
+updates: RFC 1034, RFC 1035
 
 docname: draft-jabley-dnsop-no-longer-support-any-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
@@ -12,9 +13,8 @@ v: 3
 area: "Operations and Management"
 workgroup: "Domain Name System Operations"
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - dns
+ - any
 venue:
   group: "Domain Name System Operations"
   type: "Working Group"
@@ -26,14 +26,17 @@ venue:
 author:
  -
     fullname: "Joe Abley"
-    organization: Your Organization Here
-    email: "jabley@strandkip.nl"
+    organization: Cloudflare
+    email: "jabley@cloudflare.com"
+ -
+    fullname: "Brian Haberman"
+    organization: Fastly
+    email: brian@innovationslab.net
 
 normative:
 
 informative:
 
-...
 
 --- abstract
 
