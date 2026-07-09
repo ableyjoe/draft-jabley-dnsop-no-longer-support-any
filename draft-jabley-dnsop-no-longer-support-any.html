@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>Continuing Reduction in Support for QTYPE=ANY in the DNS</title>
+<title>Continuing to Reduce Support for ANY Queries in the DNS</title>
 <meta content="Joe Abley" name="author">
 <meta content="Brian Haberman" name="author">
 <meta content="
@@ -16,9 +16,9 @@ by malicious actors to attack third parties, and minimally-sized
 responses are often constructed in order to mitigate those security
 risks.  While queries with QTYPE=ANY can be used for troubleshooting
 in some cases, the substantial inconsistency in how such queries
-are handled makes them at best an unreliable signal. 
-       This document continues the process of dropping support for QTYPE=ANY
-from the DNS protocol. 
+are handled makes them at best an unreliable signal. This document
+continues a careful and gradual process of dropping support for
+QTYPE=ANY from the DNS. 
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
 <meta content="dns" name="keyword">
@@ -1055,7 +1055,7 @@ svg {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">Continuing Reduction in Support for QTYP</td>
+<td class="center">Continuing to Reduce Support for ANY Que</td>
 <td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
@@ -1095,7 +1095,7 @@ svg {
 </dd>
 </dl>
 </div>
-<h1 id="title">Continuing Reduction in Support for QTYPE=ANY in the DNS</h1>
+<h1 id="title">Continuing to Reduce Support for ANY Queries in the DNS</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">The DNS specification from its earliest day supported a special
@@ -1106,9 +1106,9 @@ by malicious actors to attack third parties, and minimally-sized
 responses are often constructed in order to mitigate those security
 risks.  While queries with QTYPE=ANY can be used for troubleshooting
 in some cases, the substantial inconsistency in how such queries
-are handled makes them at best an unreliable signal.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">This document continues the process of dropping support for QTYPE=ANY
-from the DNS protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+are handled makes them at best an unreliable signal. This document
+continues a careful and gradual process of dropping support for
+QTYPE=ANY from the DNS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1225,39 +1225,41 @@ from the DNS protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-1-1"><span>[<a href="#RFC1034" class="cite xref">RFC1034</a>]</span> and <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> define a special query type (QTYPE)
 called "*" (type 255) which is commonly described in DNS implementations
-using the keyword "ANY" (the keyword "ANY" is also mentioned in
-<span>[<a href="#RFC6895" class="cite xref">RFC6895</a>]</span>.  This is described in <span>[<a href="#RFC1034" class="cite xref">RFC1034</a>]</span> section 3.7.1 as
-"matches all RR types". Despite the superficial simplicity of this
-direction, there are significant corner cases for which the
-specification is ambiguous, especially where a query's QNAME
-corresponds to a delegation (a case which DNS Security Extensions
-<span>[<a href="#RFC9364" class="cite xref">RFC9364</a>]</span> makes more complicated, with authoritative data now
-available both above and below the zone cut).<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2"><span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span> recognises that server operators have reasons to provide
+using the keyword "ANY". The keyword "ANY" is also mentioned in
+<span>[<a href="#RFC6895" class="cite xref">RFC6895</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">QTYPE 255 is described in <span>[<a href="#RFC1034" class="cite xref">RFC1034</a>]</span> section 3.7.1 as "matches
+all RR types". Despite the superficial simplicity of this direction,
+there are significant corner cases for which the specification is
+ambiguous, especially where a query's QNAME corresponds to a
+delegation (a case which the DNS Security Extensions <span>[<a href="#RFC9364" class="cite xref">RFC9364</a>]</span>
+make more complicated, with authoritative data now published both
+above and below the zone cut).<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3"><span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span> recognises that server operators have reasons to provide
 minimal responses to queries with QTYPE=ANY ("ANY queries"), and
 provides a number of allowable strategies that can be used. Mechanisms
 described in <span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span> have been broadly implemented with no
 known negative consequences for end users. A consequence of that
 experience is that it is now even harder to predict the type of
 response any particular server night provide to an ANY query, and
-consequently more difficult to interpret the response.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">It is known that some useful and constructive uses of ANY queries
+consequently even more difficult to interpret the response.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">It is known that some useful and constructive uses of ANY queries
 exist, despite their limitations. For example, ANY queries are
 sometimes used to troubleshoot DNS problems, together with other
-techniques and tools.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">It is also possible that software exists that sends ANY queries and
+techniques and tools.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">It is also possible that software exists that sends ANY queries and
 expects a particular type of response, e.g. a response with a
-particular RCODE. Such scenarios do not seem outlandish, and being
-able to adapt to such situations when they come to light unexpectedly
-while remaining consistent with Internet standards is important.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">ANY queries were a nice idea. However, the idea turns out to have
+particular RCODE, and that an abrupt behave in server behaviour
+might have negative consequences. Such scenarios do not seem
+outlandish, and being able to adapt to such situations when they
+come to light unexpectedly while remaining consistent with Internet
+standards is important.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">ANY queries were a nice idea. However, the idea turns out to have
 been under-specified. There is a great deal of variation in their
 implementation, and it is difficult to imagine new protocols
 incorporating ANY queries since their treatment by servers is
-extremely inconsistent.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">This document reimagines <span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span> as a first step on a path
-towards deprecation of ANY queries, and provides a second step in
-the same direction. The journey will continue.<a href="#section-1-6" class="pilcrow">¶</a></p>
+extremely inconsistent. This document recognises <span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span> as a
+first step on a path towards deprecation of ANY queries, and provides
+a second step in the same direction. The journey will continue.<a href="#section-1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
@@ -1269,8 +1271,8 @@ the same direction. The journey will continue.<a href="#section-1-6" class="pilc
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">This document assumes familiarity with DNS-specific terminology as described
-in <span>[<a href="#RFC9499" class="cite xref">RFC9499</a>]</span>.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-2">This document assumes familiarity with DNS-specific terminology as
+described in <span>[<a href="#RFC9499" class="cite xref">RFC9499</a>]</span>.<a href="#section-2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="updated-guidance-on-the-use-of-any-queries">
@@ -1303,8 +1305,8 @@ or gathering diagnostic information.<a href="#section-3.1-3" class="pilcrow">¶<
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-do-not-respond-to-any-queri" class="section-name selfRef">Do not respond to ANY queries without good reason</a>
         </h3>
 <p id="section-3.2-1">DNS servers <span class="bcp14">SHOULD</span> respond to ANY queries with RCODE = 4 (NOTIMPL)
-unless they have a specific local reason to respond differently. In
-such circumstances, DNS servers <span class="bcp14">MAY</span> respond following their
+unless they have a specific local reason to respond differently.
+In such circumstances, DNS servers <span class="bcp14">MAY</span> respond following their
 interpretation of <span>[<a href="#RFC1034" class="cite xref">RFC1034</a>]</span> and <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> or with a minimal
 response as described in <span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span>.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 </section>
