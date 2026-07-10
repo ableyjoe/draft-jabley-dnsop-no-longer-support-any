@@ -91,6 +91,17 @@ outlandish, and being able to adapt to such situations when they
 come to light unexpectedly while remaining consistent with Internet
 standards is important.
 
+More critically, an ANY query has the ability to generate a response
+that is significantly larger than the query itself, making it an
+attractive tool for Distributed Denial-of-Service (DDoS) amplification
+attacks. Such usage has led to significant concerns over the need for
+ANY queries. Even when not used for attacks, processing ANY queries imposes an
+unnecessary performance burden on authoritative servers.
+Gathering all records for a name is a complex operation that consumes
+more CPU and memory than a query for a specific type. The
+resulting large responses can also lead to UDP fragmentation and
+costly fallbacks to TCP, increasing latency
+
 ANY queries were a nice idea. However, the idea turns out to have
 been under-specified. There is a great deal of variation in their
 implementation, and it is difficult to imagine new protocols
