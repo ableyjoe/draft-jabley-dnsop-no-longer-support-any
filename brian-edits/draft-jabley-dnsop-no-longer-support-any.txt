@@ -1,0 +1,278 @@
+
+
+
+
+Domain Name System Operations                                   J. Abley
+Internet-Draft                                                Cloudflare
+Updates: RFC 1034, RFC 1035, RFC 8482 (if                    B. Haberman
+         approved)                                                Fastly
+Intended status: Standards Track                            10 July 2026
+Expires: 11 January 2027
+
+
+        Continuing to Reduce Support for ANY Queries in the DNS
+            draft-jabley-dnsop-no-longer-support-any-latest
+
+Abstract
+
+   The DNS specification from its earliest day supported a special query
+   type (QTYPE) ANY.  The handling of queries with QTYPE=ANY is observed
+   to vary between implementations.  Queries with QTYPE=ANY are known to
+   facilitate amplification that can be abused and used by malicious
+   actors to attack third parties, and minimally-sized responses are
+   often constructed in order to mitigate those security risks.  While
+   queries with QTYPE=ANY can be used for troubleshooting in some cases,
+   the substantial inconsistency in how such queries are handled makes
+   them at best an unreliable signal.  This document continues a careful
+   and gradual process of dropping support for QTYPE=ANY from the DNS.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://ableyjoe.github.io/draft-jabley-dnsop-no-longer-support-any/
+   draft-jabley-dnsop-no-longer-support-any.html.  Status information
+   for this document may be found at https://datatracker.ietf.org/doc/
+   draft-jabley-dnsop-no-longer-support-any/.
+
+   Discussion of this document takes place on the Domain Name System
+   Operations Working Group mailing list (mailto:dnsop@ietf.org), which
+   is archived at https://mailarchive.ietf.org/arch/browse/dnsop/.
+   Subscribe at https://www.ietf.org/mailman/listinfo/dnsop/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/ableyjoe/draft-jabley-dnsop-no-longer-support-any.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 11 January 2027.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Terminology
+   3.  Updated Guidance on the Use of ANY Queries
+     3.1.  Do not send ANY queries without good reason
+     3.2.  Do not respond to ANY queries without good reason
+   4.  Security Considerations
+   5.  IANA Considerations
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
+   Acknowledgments
+   Authors' Addresses
+
+1.  Introduction
+
+   [RFC1034] and [RFC1035] define a special query type (QTYPE) called
+   "*" (type 255) which is commonly described in DNS implementations
+   using the keyword "ANY".  The keyword "ANY" is also mentioned in
+   [RFC6895].
+
+   QTYPE 255 is described in [RFC1034] section 3.7.1 as "matches all RR
+   types".  Despite the superficial simplicity of this direction, there
+   are significant corner cases for which the specification is
+   ambiguous, especially where a query's QNAME corresponds to a
+   delegation (a case which the DNS Security Extensions [RFC9364] make
+   more complicated, with authoritative data now published both above
+   and below the zone cut).
+
+   [RFC8482] recognises that server operators have reasons to provide
+   minimal responses to queries with QTYPE=ANY ("ANY queries"), and
+   provides a number of allowable strategies that can be used.
+   Mechanisms described in [RFC8482] have been broadly implemented with
+   no known negative consequences for end users.  A consequence of that
+   experience is that it is now even harder to predict the type of
+   response any particular server night provide to an ANY query, and
+   consequently even more difficult to interpret the response.
+
+   It is known that some useful and constructive uses of ANY queries
+   exist, despite their limitations.  For example, ANY queries are
+   sometimes used to troubleshoot DNS problems, together with other
+   techniques and tools.
+
+   It is also possible that software exists that sends ANY queries and
+   expects a particular type of response, e.g. a response with a
+   particular RCODE, and that an abrupt behave in server behaviour might
+   have negative consequences.  Such scenarios do not seem outlandish,
+   and being able to adapt to such situations when they come to light
+   unexpectedly while remaining consistent with Internet standards is
+   important.
+
+   More critically, an ANY query has the ability to generate a response
+   that is significantly larger than the query itself, making it an
+   attractive tool for Distributed Denial-of-Service (DDoS)
+   amplification attacks.  Such usage has led to significant concerns
+   over the need for ANY queries.  Even when not used for attacks,
+   processing ANY queries imposes an unnecessary performance burden on
+   authoritative servers.  Gathering all records for a name is a complex
+   operation that consumes more CPU and memory than a query for a
+   specific type.  The resulting large responses can also lead to UDP
+   fragmentation and costly fallbacks to TCP, increasing latency
+
+   ANY queries were a nice idea.  However, the idea turns out to have
+   been under-specified.  There is a great deal of variation in their
+   implementation, and it is difficult to imagine new protocols
+   incorporating ANY queries since their treatment by servers is
+   extremely inconsistent.  This document recognises [RFC8482] as a
+   first step on a path towards deprecation of ANY queries, and provides
+   a second step in the same direction.  The journey will continue.
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   This document assumes familiarity with DNS-specific terminology as
+   described in [RFC9499].
+
+3.  Updated Guidance on the Use of ANY Queries
+
+3.1.  Do not send ANY queries without good reason
+
+   New protocols developed at the IETF SHOULD NOT incorporate ANY
+   queries unless the operational consequences of ambiguous behaviour
+   and inconsistent implementation are thoroughly understood and
+   documented.
+
+   DNS clients SHOULD NOT send ANY queries without a thorough
+   understanding of their limitations.  DNS clients SHOULD NOT rely upon
+   any particular interpretation of a response to an ANY query unless
+   the specific behaviour of the system sending the response is known
+   and predictable.  DNS clients MUST NOT assume that this is the
+   situation when sending queries to arbitrary destinations on the
+   Internet.
+
+   DNS clients MAY send ANY queries for the purposes of troubleshooting
+   or gathering diagnostic information.
+
+3.2.  Do not respond to ANY queries without good reason
+
+   DNS servers SHOULD respond to ANY queries with RCODE = 4 (NOTIMPL)
+   unless they have a specific local reason to respond differently.  In
+   such circumstances, DNS servers MAY respond following their
+   interpretation of [RFC1034] and [RFC1035] or with a minimal response
+   as described in [RFC8482].
+
+4.  Security Considerations
+
+   ANY queries are known to have been used to provide amplification of
+   source-spoofed DNS queries using UDP transport, as described in
+   [RFC5358].  However, there are many other QTYPEs that provide
+   amplification potential when coupled with predictable QNAMEs, and a
+   reduction in support for ANY queries will not eliminate this problem.
+
+   ANY queries can be used to inspect the cache of a recursive server,
+   and this might provide insight into query patterns for users of that
+   recursive server; this ability might present privacy concerns that
+   could be mitigated by not supporting ANY queries at all.
+
+5.  IANA Considerations
+
+   The IANA is directed to update the "Resource Record (RR) TYPEs"
+   subregistry of the "Domain Name System (DNS) Parameters" registry
+   entry for type 255 to append this document to the list of references,
+   and to update the TYPE column to reflect the direction in [RFC6895].
+
+   +=======+=======+===============+==================================+
+   | TYPE  | Value | Meaning       | Reference                        |
+   +=======+=======+===============+==================================+
+   | *     | 255   | A request for | [RFC1034][RFC6895][RFC8482][this |
+   | (ANY) |       | some or all   | document]                        |
+   |       |       | records the   |                                  |
+   |       |       | server has    |                                  |
+   |       |       | available     |                                  |
+   +-------+-------+---------------+----------------------------------+
+
+                                 Table 1
+
+6.  References
+
+6.1.  Normative References
+
+   [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
+              STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987,
+              <https://www.rfc-editor.org/rfc/rfc1034>.
+
+   [RFC1035]  Mockapetris, P., "Domain names - implementation and
+              specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
+              November 1987, <https://www.rfc-editor.org/rfc/rfc1035>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC6895]  Eastlake 3rd, D., "Domain Name System (DNS) IANA
+              Considerations", BCP 42, RFC 6895, DOI 10.17487/RFC6895,
+              April 2013, <https://www.rfc-editor.org/rfc/rfc6895>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8482]  Abley, J., Gudmundsson, O., Majkowski, M., and E. Hunt,
+              "Providing Minimal-Sized Responses to DNS Queries That
+              Have QTYPE=ANY", RFC 8482, DOI 10.17487/RFC8482, January
+              2019, <https://www.rfc-editor.org/rfc/rfc8482>.
+
+   [RFC9499]  Hoffman, P. and K. Fujiwara, "DNS Terminology", BCP 219,
+              RFC 9499, DOI 10.17487/RFC9499, March 2024,
+              <https://www.rfc-editor.org/rfc/rfc9499>.
+
+6.2.  Informative References
+
+   [RFC5358]  Damas, J. and F. Neves, "Preventing Use of Recursive
+              Nameservers in Reflector Attacks", BCP 140, RFC 5358,
+              DOI 10.17487/RFC5358, October 2008,
+              <https://www.rfc-editor.org/rfc/rfc5358>.
+
+   [RFC9364]  Hoffman, P., "DNS Security Extensions (DNSSEC)", BCP 237,
+              RFC 9364, DOI 10.17487/RFC9364, February 2023,
+              <https://www.rfc-editor.org/rfc/rfc9364>.
+
+Acknowledgments
+
+   Your name here, etc.
+
+Authors' Addresses
+
+   Joe Abley
+   Cloudflare
+   Email: jabley@cloudflare.com
+
+
+   Brian Haberman
+   Fastly
+   Email: brian@innovationslab.net
