@@ -6,8 +6,8 @@ Domain Name System Operations                                   J. Abley
 Internet-Draft                                                Cloudflare
 Updates: RFC 1034, RFC 1035, RFC 8482 (if                    B. Haberman
          approved)                                                Fastly
-Intended status: Standards Track                            10 July 2026
-Expires: 11 January 2027
+Intended status: Standards Track                            13 July 2026
+Expires: 14 January 2027
 
 
         Continuing to Reduce Support for ANY Queries in the DNS
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 January 2027.
+   This Internet-Draft will expire on 14 January 2027.
 
 Copyright Notice
 
@@ -79,14 +79,15 @@ Table of Contents
 
    1.  Introduction
    2.  Terminology
-   3.  Updated Guidance on the Use of ANY Queries
-     3.1.  Do not send ANY queries without good reason
-     3.2.  Do not respond to ANY queries without good reason
-   4.  Security Considerations
-   5.  IANA Considerations
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+   3.  Common Use, Risks and Benefits of ANY Queries
+   4.  Updated Guidance on the Use of ANY Queries
+     4.1.  Do not send ANY queries without good reason
+     4.2.  Do not respond to ANY queries without good reason
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -114,6 +115,25 @@ Table of Contents
    response any particular server night provide to an ANY query, and
    consequently even more difficult to interpret the response.
 
+   This document continues the careful and gradual process of dropping
+   support for ANY queries from the DNS.
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   This document assumes familiarity with DNS-specific terminology as
+   described in [RFC9499].
+
+   This document uses the phrase "ANY query" to mean a query with
+   QTYPE=ANY and QCLASS=IN.
+
+3.  Common Use, Risks and Benefits of ANY Queries
+
    It is known that some useful and constructive uses of ANY queries
    exist, despite their limitations.  For example, ANY queries are
    sometimes used to troubleshoot DNS problems, together with other
@@ -131,35 +151,30 @@ Table of Contents
    that is significantly larger than the query itself, making it an
    attractive tool for Distributed Denial-of-Service (DDoS)
    amplification attacks.  Such usage has led to significant concerns
-   over the need for ANY queries.  Even when not used for attacks,
-   processing ANY queries imposes an unnecessary performance burden on
-   authoritative servers.  Gathering all records for a name is a complex
-   operation that consumes more CPU and memory than a query for a
-   specific type.  The resulting large responses can also lead to UDP
-   fragmentation and costly fallbacks to TCP, increasing latency
+   over the need for ANY queries.  ANY queries are not the only
+   available way to achieve amplification using the DNS, but are cheaper
+   than some alternatives since it can be easier to find large responses
+   using ANY than it is to discover specific (QNAME, QTYPE) tuples that
+   achieve the same effect.
+
+   Even when not used for attacks, processing ANY queries imposes an
+   unnecessary performance burden on authoritative servers.  Gathering
+   all records for a name is a complex operation in some DNS
+   implementations that can consume more CPU and memory than a query for
+   a specific type.  The resulting large responses can also lead to UDP
+   fragmentation and costly fallbacks to TCP, increasing query latency.
 
    ANY queries were a nice idea.  However, the idea turns out to have
    been under-specified.  There is a great deal of variation in their
-   implementation, and it is difficult to imagine new protocols
+   implementation and it is difficult to imagine new protocols
    incorporating ANY queries since their treatment by servers is
    extremely inconsistent.  This document recognises [RFC8482] as a
    first step on a path towards deprecation of ANY queries, and provides
    a second step in the same direction.  The journey will continue.
 
-2.  Terminology
+4.  Updated Guidance on the Use of ANY Queries
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
-
-   This document assumes familiarity with DNS-specific terminology as
-   described in [RFC9499].
-
-3.  Updated Guidance on the Use of ANY Queries
-
-3.1.  Do not send ANY queries without good reason
+4.1.  Do not send ANY queries without good reason
 
    New protocols developed at the IETF SHOULD NOT incorporate ANY
    queries unless the operational consequences of ambiguous behaviour
@@ -177,7 +192,7 @@ Table of Contents
    DNS clients MAY send ANY queries for the purposes of troubleshooting
    or gathering diagnostic information.
 
-3.2.  Do not respond to ANY queries without good reason
+4.2.  Do not respond to ANY queries without good reason
 
    DNS servers SHOULD respond to ANY queries with RCODE = 4 (NOTIMPL)
    unless they have a specific local reason to respond differently.  In
@@ -185,7 +200,7 @@ Table of Contents
    interpretation of [RFC1034] and [RFC1035] or with a minimal response
    as described in [RFC8482].
 
-4.  Security Considerations
+5.  Security Considerations
 
    ANY queries are known to have been used to provide amplification of
    source-spoofed DNS queries using UDP transport, as described in
@@ -193,12 +208,18 @@ Table of Contents
    amplification potential when coupled with predictable QNAMEs, and a
    reduction in support for ANY queries will not eliminate this problem.
 
+   ANY queries can be expensive to process on some authoritative DNS
+   servers, and hence a volumetric attack against such a server with
+   QTYPE=ANY has the potential to consume more resources than an attack
+   that uses other QTYPEs.  By dropping support for ANY queries, a
+   server operator might well reduce the impact of attack traffic.
+
    ANY queries can be used to inspect the cache of a recursive server,
    and this might provide insight into query patterns for users of that
    recursive server; this ability might present privacy concerns that
-   could be mitigated by not supporting ANY queries at all.
+   could be mitigated by dropping support for ANY queries.
 
-5.  IANA Considerations
+6.  IANA Considerations
 
    The IANA is directed to update the "Resource Record (RR) TYPEs"
    subregistry of the "Domain Name System (DNS) Parameters" registry
@@ -217,9 +238,9 @@ Table of Contents
 
                                  Table 1
 
-6.  References
+7.  References
 
-6.1.  Normative References
+7.1.  Normative References
 
    [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
               STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987,
@@ -251,7 +272,7 @@ Table of Contents
               RFC 9499, DOI 10.17487/RFC9499, March 2024,
               <https://www.rfc-editor.org/rfc/rfc9499>.
 
-6.2.  Informative References
+7.2.  Informative References
 
    [RFC5358]  Damas, J. and F. Neves, "Preventing Use of Recursive
               Nameservers in Reflector Attacks", BCP 140, RFC 5358,
