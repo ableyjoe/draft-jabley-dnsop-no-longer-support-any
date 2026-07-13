@@ -78,6 +78,23 @@ experience is that it is now even harder to predict the type of
 response any particular server night provide to an ANY query, and
 consequently even more difficult to interpret the response.
 
+This document continues the careful and gradual process of dropping
+support for ANY queries from the DNS.
+
+
+# Terminology
+
+{::boilerplate bcp14-tagged}
+
+This document assumes familiarity with DNS-specific terminology as
+described in {{!RFC9499}}.
+
+This document uses the phrase "ANY query" to mean a query with
+QTYPE=ANY and QCLASS=IN.
+
+
+# Common Use, Risks and Benefits of ANY Queries
+
 It is known that some useful and constructive uses of ANY queries
 exist, despite their limitations. For example, ANY queries are
 sometimes used to troubleshoot DNS problems, together with other
@@ -94,29 +111,27 @@ standards is important.
 More critically, an ANY query has the ability to generate a response
 that is significantly larger than the query itself, making it an
 attractive tool for Distributed Denial-of-Service (DDoS) amplification
-attacks. Such usage has led to significant concerns over the need for
-ANY queries. Even when not used for attacks, processing ANY queries imposes an
-unnecessary performance burden on authoritative servers.
-Gathering all records for a name is a complex operation that consumes
-more CPU and memory than a query for a specific type. The
-resulting large responses can also lead to UDP fragmentation and
-costly fallbacks to TCP, increasing latency
+attacks. Such usage has led to significant concerns over the need
+for ANY queries. ANY queries are not the only available way to
+achieve amplification using the DNS, but are cheaper than some
+alternatives since it can be easier to find large responses using
+ANY than it is to discover specific (QNAME, QTYPE) tuples that
+achieve the same effect.
+
+Even when not used for attacks, processing ANY queries imposes an
+unnecessary performance burden on authoritative servers.  Gathering
+all records for a name is a complex operation in some DNS implementations
+that can consume more CPU and memory than a query for a specific
+type. The resulting large responses can also lead to UDP fragmentation
+and costly fallbacks to TCP, increasing query latency.
 
 ANY queries were a nice idea. However, the idea turns out to have
 been under-specified. There is a great deal of variation in their
-implementation, and it is difficult to imagine new protocols
+implementation and it is difficult to imagine new protocols
 incorporating ANY queries since their treatment by servers is
 extremely inconsistent. This document recognises {{!RFC8482}} as a
 first step on a path towards deprecation of ANY queries, and provides
 a second step in the same direction. The journey will continue.
-
-
-# Terminology
-
-{::boilerplate bcp14-tagged}
-
-This document assumes familiarity with DNS-specific terminology as
-described in {{!RFC9499}}.
 
 
 # Updated Guidance on the Use of ANY Queries
@@ -155,10 +170,17 @@ amplification potential when coupled with predictable QNAMEs, and
 a reduction in support for ANY queries will not eliminate this
 problem.
 
+ANY queries can be expensive to process on some authoritative DNS
+servers, and hence a volumetric attack against such a server with
+QTYPE=ANY has the potential to consume more resources than an attack
+that uses other QTYPEs. By dropping support for ANY queries, a
+server operator might well reduce the impact of attack traffic.
+
 ANY queries can be used to inspect the cache of a recursive server,
 and this might provide insight into query patterns for users of
 that recursive server; this ability might present privacy concerns
-that could be mitigated by not supporting ANY queries at all.
+that could be mitigated by dropping support for ANY queries.
+
 
 # IANA Considerations
 
