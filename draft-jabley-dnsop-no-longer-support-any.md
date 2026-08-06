@@ -161,6 +161,12 @@ In such circumstances, DNS servers MAY respond following their
 interpretation of {{!RFC1034}} and {{!RFC1035}} or with a minimal
 response as described in {{!RFC8482}}.
 
+DNS servers that do not support ANY queries MAY include an Extended
+DNS Error (EDE) {{!RFC8914}} in the response of type TBA in order
+to explain further the nature of the response, e.g. as an aid to
+troubleshooting. Details of the registration of EDE type TBA can
+be found in {{ede_iana}}.
+
 # Security Considerations
 
 ANY queries are known to have been used to provide amplification
@@ -184,6 +190,8 @@ that could be mitigated by dropping support for ANY queries.
 
 # IANA Considerations
 
+## Update References for RRTYPE 255
+
 The IANA is directed to update the "Resource Record (RR) TYPEs"
 subregistry of the "Domain Name System (DNS) Parameters" registry
 entry for type 255 to append this document to the list of references,
@@ -192,6 +200,17 @@ and to update the TYPE column to reflect the direction in {{!RFC6895}}.
 | TYPE  | Value  | Meaning  | Reference  |
 | ----  | -----  | -----    | -----      |
 | * (ANY)  | 255    | A request for some or all records the server has available | {{!RFC1034}}{{!RFC6895}}{{!RFC8482}}[this document]  |
+
+## Registration of Extended DNS Error Code {#ede_iana}
+
+The IANA is directed to assign an INFO-CODE code-point from the
+"Extended DNS Error Codes" subregistry of the "Domain Name Systems
+(DNS) Paramters" registry and to record the assignment in the
+registry as follows:
+
+| INFO-CODE  | Purpose  | Reference  |
+| ---------  | -------  | ---------  |
+| TBA        | ANY queries are not supported on this nameserver  | [this document]  |
 
 
 --- back
