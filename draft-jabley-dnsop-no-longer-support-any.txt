@@ -6,8 +6,8 @@ Domain Name System Operations                                   J. Abley
 Internet-Draft                                                Cloudflare
 Updates: RFC 1034, RFC 1035, RFC 8482 (if                    B. Haberman
          approved)                                                Fastly
-Intended status: Standards Track                            13 July 2026
-Expires: 14 January 2027
+Intended status: Standards Track                           6 August 2026
+Expires: 7 February 2027
 
 
         Continuing to Reduce Support for ANY Queries in the DNS
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 January 2027.
+   This Internet-Draft will expire on 7 February 2027.
 
 Copyright Notice
 
@@ -85,6 +85,8 @@ Table of Contents
      4.2.  Do not respond to ANY queries without good reason
    5.  Security Considerations
    6.  IANA Considerations
+     6.1.  Update References for RRTYPE 255
+     6.2.  Registration of Extended DNS Error Code
    7.  References
      7.1.  Normative References
      7.2.  Informative References
@@ -200,6 +202,12 @@ Table of Contents
    interpretation of [RFC1034] and [RFC1035] or with a minimal response
    as described in [RFC8482].
 
+   DNS servers that do not support ANY queries MAY include an Extended
+   DNS Error (EDE) [RFC8914] in the response of type TBA in order to
+   explain further the nature of the response, e.g. as an aid to
+   troubleshooting.  Details of the registration of EDE type TBA can be
+   found in Section 6.2.
+
 5.  Security Considerations
 
    ANY queries are known to have been used to provide amplification of
@@ -221,6 +229,8 @@ Table of Contents
 
 6.  IANA Considerations
 
+6.1.  Update References for RRTYPE 255
+
    The IANA is directed to update the "Resource Record (RR) TYPEs"
    subregistry of the "Domain Name System (DNS) Parameters" registry
    entry for type 255 to append this document to the list of references,
@@ -237,6 +247,22 @@ Table of Contents
    +-------+-------+---------------+----------------------------------+
 
                                  Table 1
+
+6.2.  Registration of Extended DNS Error Code
+
+   The IANA is directed to assign an INFO-CODE code-point from the
+   "Extended DNS Error Codes" subregistry of the "Domain Name Systems
+   (DNS) Paramters" registry and to record the assignment in the
+   registry as follows:
+
+         +===========+==============================+===========+
+         | INFO-CODE | Purpose                      | Reference |
+         +===========+==============================+===========+
+         | TBA       | ANY queries are not          | [this     |
+         |           | supported on this nameserver | document] |
+         +-----------+------------------------------+-----------+
+
+                                 Table 2
 
 7.  References
 
@@ -267,6 +293,11 @@ Table of Contents
               "Providing Minimal-Sized Responses to DNS Queries That
               Have QTYPE=ANY", RFC 8482, DOI 10.17487/RFC8482, January
               2019, <https://www.rfc-editor.org/rfc/rfc8482>.
+
+   [RFC8914]  Kumari, W., Hunt, E., Arends, R., Hardaker, W., and D.
+              Lawrence, "Extended DNS Errors", RFC 8914,
+              DOI 10.17487/RFC8914, October 2020,
+              <https://www.rfc-editor.org/rfc/rfc8914>.
 
    [RFC9499]  Hoffman, P. and K. Fujiwara, "DNS Terminology", BCP 219,
               RFC 9499, DOI 10.17487/RFC9499, March 2024,

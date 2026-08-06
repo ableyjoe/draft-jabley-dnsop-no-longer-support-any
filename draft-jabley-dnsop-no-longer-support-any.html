@@ -33,7 +33,7 @@ QTYPE=ANY from the DNS.
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.0
+    platformdirs 4.11.0
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
@@ -73,7 +73,6 @@ QTYPE=ANY from the DNS.
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -122,7 +121,6 @@ QTYPE=ANY from the DNS.
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -187,7 +185,6 @@ QTYPE=ANY from the DNS.
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1056,11 +1053,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Continuing to Reduce Support for ANY Que</td>
-<td class="right">July 2026</td>
+<td class="right">August 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Abley &amp; Haberman</td>
-<td class="center">Expires 14 January 2027</td>
+<td class="center">Expires 7 February 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1076,12 +1073,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfcRFC%201034" class="eref">RFC 1034</a>, <a href="https://www.rfc-editor.org/rfc/rfcRFC%201035" class="eref">RFC 1035</a>, <a href="https://www.rfc-editor.org/rfc/rfcRFC%208482" class="eref">RFC 8482</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-13" class="published">13 July 2026</time>
+<time datetime="2026-08-06" class="published">6 August 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-14">14 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-02-07">7 February 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1145,7 +1142,7 @@ QTYPE=ANY from the DNS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1199,6 +1196,14 @@ QTYPE=ANY from the DNS.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-update-references-for-rrtyp" class="internal xref">Update References for RRTYPE 255</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-registration-of-extended-dn" class="internal xref">Registration of Extended DNS Error Code</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
@@ -1338,6 +1343,11 @@ unless they have a specific local reason to respond differently.
 In such circumstances, DNS servers <span class="bcp14">MAY</span> respond following their
 interpretation of <span>[<a href="#RFC1034" class="cite xref">RFC1034</a>]</span> and <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span> or with a minimal
 response as described in <span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">DNS servers that do not support ANY queries <span class="bcp14">MAY</span> include an Extended
+DNS Error (EDE) <span>[<a href="#RFC8914" class="cite xref">RFC8914</a>]</span> in the response of type TBA in order
+to explain further the nature of the response, e.g. as an aid to
+troubleshooting. Details of the registration of EDE type TBA can
+be found in <a href="#ede_iana" class="auto internal xref">Section 6.2</a>.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1369,30 +1379,65 @@ that could be mitigated by dropping support for ANY queries.<a href="#section-5-
       <h2 id="name-iana-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-6-1">The IANA is directed to update the "Resource Record (RR) TYPEs"
+<div id="update-references-for-rrtype-255">
+<section id="section-6.1">
+        <h3 id="name-update-references-for-rrtyp">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-update-references-for-rrtyp" class="section-name selfRef">Update References for RRTYPE 255</a>
+        </h3>
+<p id="section-6.1-1">The IANA is directed to update the "Resource Record (RR) TYPEs"
 subregistry of the "Domain Name System (DNS) Parameters" registry
 entry for type 255 to append this document to the list of references,
-and to update the TYPE column to reflect the direction in <span>[<a href="#RFC6895" class="cite xref">RFC6895</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+and to update the TYPE column to reflect the direction in <span>[<a href="#RFC6895" class="cite xref">RFC6895</a>]</span>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
-        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
-          <tr>
-            <th class="text-left" rowspan="1" colspan="1">TYPE</th>
-            <th class="text-left" rowspan="1" colspan="1">Value</th>
-            <th class="text-left" rowspan="1" colspan="1">Meaning</th>
-            <th class="text-left" rowspan="1" colspan="1">Reference</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">* (ANY)</td>
-            <td class="text-left" rowspan="1" colspan="1">255</td>
-            <td class="text-left" rowspan="1" colspan="1">A request for some or all records the server has available</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <span>[<a href="#RFC1034" class="cite xref">RFC1034</a>]</span><span>[<a href="#RFC6895" class="cite xref">RFC6895</a>]</span><span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span>[this document]</td>
-          </tr>
-        </tbody>
-      </table>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">TYPE</th>
+              <th class="text-left" rowspan="1" colspan="1">Value</th>
+              <th class="text-left" rowspan="1" colspan="1">Meaning</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">* (ANY)</td>
+              <td class="text-left" rowspan="1" colspan="1">255</td>
+              <td class="text-left" rowspan="1" colspan="1">A request for some or all records the server has available</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC1034" class="cite xref">RFC1034</a>]</span><span>[<a href="#RFC6895" class="cite xref">RFC6895</a>]</span><span>[<a href="#RFC8482" class="cite xref">RFC8482</a>]</span>[this document]</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="ede_iana">
+<section id="section-6.2">
+        <h3 id="name-registration-of-extended-dn">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-registration-of-extended-dn" class="section-name selfRef">Registration of Extended DNS Error Code</a>
+        </h3>
+<p id="section-6.2-1">The IANA is directed to assign an INFO-CODE code-point from the
+"Extended DNS Error Codes" subregistry of the "Domain Name Systems
+(DNS) Paramters" registry and to record the assignment in the
+registry as follows:<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">INFO-CODE</th>
+              <th class="text-left" rowspan="1" colspan="1">Purpose</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">TBA</td>
+              <td class="text-left" rowspan="1" colspan="1">ANY queries are not supported on this nameserver</td>
+              <td class="text-left" rowspan="1" colspan="1">[this document]</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
 </section>
 </div>
 <div id="sec-combined-references">
@@ -1429,6 +1474,10 @@ and to update the TYPE column to reflect the direction in <span>[<a href="#RFC68
 <dt id="RFC8482">[RFC8482]</dt>
         <dd>
 <span class="refAuthor">Abley, J.</span>, <span class="refAuthor">Gudmundsson, O.</span>, <span class="refAuthor">Majkowski, M.</span>, and <span class="refAuthor">E. Hunt</span>, <span class="refTitle">"Providing Minimal-Sized Responses to DNS Queries That Have QTYPE=ANY"</span>, <span class="seriesInfo">RFC 8482</span>, <span class="seriesInfo">DOI 10.17487/RFC8482</span>, <time datetime="2019-01" class="refDate">January 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8482">https://www.rfc-editor.org/rfc/rfc8482</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8914">[RFC8914]</dt>
+        <dd>
+<span class="refAuthor">Kumari, W.</span>, <span class="refAuthor">Hunt, E.</span>, <span class="refAuthor">Arends, R.</span>, <span class="refAuthor">Hardaker, W.</span>, and <span class="refAuthor">D. Lawrence</span>, <span class="refTitle">"Extended DNS Errors"</span>, <span class="seriesInfo">RFC 8914</span>, <span class="seriesInfo">DOI 10.17487/RFC8914</span>, <time datetime="2020-10" class="refDate">October 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8914">https://www.rfc-editor.org/rfc/rfc8914</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9499">[RFC9499]</dt>
       <dd>
